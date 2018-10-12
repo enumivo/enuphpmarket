@@ -76,7 +76,7 @@ void ex::apply(account_name contract, action_name act) {
     auto transfer = unpack_action_data<currency::transfer>();
     enumivo_assert(transfer.quantity.symbol == ENU_SYMBOL,
                  "must pay with ENU");
-    buySAT(transfer);
+    buyPHP(transfer);
     return;
   }
 
