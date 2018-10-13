@@ -33,7 +33,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   double amt = amount;
   double bal = enu_balance;
-  double tobuy(1+amt/bal,0.5);
+  double tobuy = pow(1+amt/bal,0.5);
 
 
   auto to = transfer.from;
