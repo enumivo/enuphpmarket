@@ -33,7 +33,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   double amt = amount;
   double bal = enu_balance;
-  double pow(1+amt/bal,0.5);
+  double tobuy(1+amt/bal,0.5);
 
 
   auto to = transfer.from;
@@ -42,7 +42,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   action(permission_level{_self, N(active)}, N(coin), N(transfer),
          std::make_tuple(_self, to, quantity,
-                         std::string("Buy PHP with ENU ")+std::to_string(percentage)))
+                         std::string("Buy PHP with ENU ")+std::to_string(tobuy)))
       .send();
 }
 
