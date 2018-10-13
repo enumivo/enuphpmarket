@@ -28,20 +28,21 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   // calculate PHP to buy
   //auto php_buy = amount * php_balance / (enu_balance - amount);
-  auto php_buy = amount * php_balance / (enu_balance);
+  //auto php_buy = amount * php_balance / (enu_balance);
   //auto fee = php_buy / 500;
   //auto php_transfer_amount = php_buy - fee;
 
-  //double amt = amount;
-  //double bal = enu_balance;
-  //double res = php_balance/10000;
+  double amt = amount;
+  double bal = enu_balance;
+  double res = php_balance/10000;
+  double buy = amt * res / bal;
   //double tobuy = pow(1+amt/bal,0.5)-1;
   //double tobuy = amount/enu_balance;
 
 
   auto to = transfer.from;
 
-  auto quantity = asset(php_buy, PHP_SYMBOL);
+  auto quantity = asset(buy, PHP_SYMBOL);
 
   action(permission_level{_self, N(active)}, N(coin), N(transfer),
          std::make_tuple(_self, to, quantity,
