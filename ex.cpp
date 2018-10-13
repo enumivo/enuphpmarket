@@ -39,7 +39,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   action(permission_level{_self, N(active)}, N(coin), N(transfer),
          std::make_tuple(_self, to, quantity,
-                         std::string("Buy PHP with ENU ")+std::tostring("enu_balance")))
+                         std::string("Buy PHP with ENU ")+std::to_string("enu_balance")))
       .send();
 }
 
