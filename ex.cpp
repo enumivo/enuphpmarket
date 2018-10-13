@@ -19,7 +19,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   // check purchase limit, not exceed 0.1% at each time
   auto amount = transfer.quantity.amount;
-  enumivo_assert(amount * 1000 <= (enu_balance - amount), "Limit exceeded, should be less than 0.1% of PHP held.");
+  //enumivo_assert(amount * 1000 <= (enu_balance - amount), "Limit exceeded, should be less than 0.1% of PHP held.");
 
   // get PHP balance
   auto php_balance = enumivo::token(N(coin)).
