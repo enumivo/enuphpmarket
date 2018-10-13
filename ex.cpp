@@ -31,7 +31,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
   auto fee = php_buy / 500;
   auto php_transfer_amount = php_buy - fee;
 
-  auto test1 = amount;
+  auto test1 = 100*amount/enu_balance;
 
   auto to = transfer.from;
 
