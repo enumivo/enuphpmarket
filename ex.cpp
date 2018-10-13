@@ -64,9 +64,10 @@ void ex::sellPHP(const currency::transfer &transfer) {
   //auto enu_buy = amount * enu_balance / (php_balance - amount);
   //auto fee = enu_buy / 500;
   //auto enu_transfer_amount = enu_buy - fee;
-  //auto to = transfer.from;
-
+  
   auto enu_transfer_amount = enu_balance * ( pow( 1+(amount/php_balance), 0.5 ) -1 ) * 0.998;
+
+  auto to = transfer.from;
 
   auto quantity = asset(enu_transfer_amount, ENU_SYMBOL);
 
