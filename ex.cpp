@@ -28,13 +28,15 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   // calculate PHP to buy
   auto php_buy = amount * php_balance / (enu_balance - amount);
+  auto php_buy = amount * php_balance / (enu_balance);
   auto fee = php_buy / 500;
   auto php_transfer_amount = php_buy - fee;
 
-  double amt = amount;
-  double bal = enu_balance;
-  double res = php_balance/10000;
-  double tobuy = pow(1+amt/bal,0.5)-1;
+  //double amt = amount;
+  //double bal = enu_balance;
+  //double res = php_balance/10000;
+  //double tobuy = pow(1+amt/bal,0.5)-1;
+  //double tobuy = amount/enu_balance;
 
 
   auto to = transfer.from;
@@ -43,7 +45,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   action(permission_level{_self, N(active)}, N(coin), N(transfer),
          std::make_tuple(_self, to, quantity,
-                         std::string("Buy PHP with ENU ")+std::to_string(res)+' '+std::to_string(tobuy)))
+                         std::string("Buy PHP with ENU ")+std::to_string(res)+' '+std::to_string(php_transfer_amount)))
       .send();
 }
 
