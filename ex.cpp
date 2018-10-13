@@ -19,7 +19,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   // check purchase limit, not exceed 0.1% at each time
   auto amount = transfer.quantity.amount;
-  //enumivo_assert(amount * 1000 <= (enu_balance - amount), "Limit exceeded, should be less than 0.1% of PHP held.");
+  enumivo_assert(amount * 1000 <= (enu_balance - amount), "Limit exceeded, should be less than 0.1% of PHP held.");
 
   // get PHP balance
   auto php_balance = enumivo::token(N(coin)).
@@ -27,11 +27,11 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
 
   // calculate PHP to buy
-  //auto php_buy = amount * php_balance / (enu_balance - amount);
-  //auto fee = php_buy / 500;
-  //auto php_transfer_amount = php_buy - fee;
+  auto php_buy = amount * php_balance / (enu_balance - amount);
+  auto fee = php_buy / 500;
+  auto php_transfer_amount = php_buy - fee;
 
-  auto php_transfer_amount = php_balance * ( pow( 1+(amount/enu_balance), 0.5 ) -1 );
+  //auto php_transfer_amount = php_balance * ( pow( 1+(amount/enu_balance), 0.5 ) -1 );
 
   auto to = transfer.from;
 
@@ -54,18 +54,18 @@ void ex::sellPHP(const currency::transfer &transfer) {
 
   // check purchase limit, not exceed 0.1% at each time
   auto amount = transfer.quantity.amount;
-  //enumivo_assert(amount * 1000 <= (php_balance - amount), "Limit exceeded, should be less than 0.1% of ENU held.");
+  enumivo_assert(amount * 1000 <= (php_balance - amount), "Limit exceeded, should be less than 0.1% of ENU held.");
 
   // get ENU balance
   auto enu_balance = enumivo::token(N(enu.token)).
 	   get_balance(_self, enumivo::symbol_type(ENU_SYMBOL).name()).amount;
 
   // calculate ENU to transfer
-  //auto enu_buy = amount * enu_balance / (php_balance - amount);
-  //auto fee = enu_buy / 500;
-  //auto enu_transfer_amount = enu_buy - fee;
+  auto enu_buy = amount * enu_balance / (php_balance - amount);
+  auto fee = enu_buy / 500;
+  auto enu_transfer_amount = enu_buy - fee;
   
-  auto enu_transfer_amount = enu_balance * ( pow( 1+(amount/php_balance), 0.5 ) -1 );
+  //auto enu_transfer_amount = enu_balance * ( pow( 1+(amount/php_balance), 0.5 ) -1 );
 
   auto to = transfer.from;
 
