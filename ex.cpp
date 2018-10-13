@@ -19,7 +19,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   // check purchase limit, not exceed 0.1% at each time
   auto amount = transfer.quantity.amount;
-  //enumivo_assert(amount * 1000 <= (enu_balance - amount), "Limit exceeded, should be less than 0.1% of SAT held.");
+  //enumivo_assert(amount * 1000 <= (enu_balance - amount), "Limit exceeded, should be less than 0.1% of PHP held.");
 
   // get PHP balance
   auto php_balance = enumivo::token(N(coin)).
@@ -31,7 +31,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
   //auto fee = php_buy / 500;
   //auto php_transfer_amount = php_buy - fee;
 
-  auto php_transfer_amount = php_balance * ( pow( 1+(amount/enu_balance), 0.5 ) -1 ) * 0.998;
+  auto php_transfer_amount = php_balance * ( pow( 1+(amount/enu_balance), 0.5 ) -1 );
 
   auto to = transfer.from;
 
@@ -65,7 +65,7 @@ void ex::sellPHP(const currency::transfer &transfer) {
   //auto fee = enu_buy / 500;
   //auto enu_transfer_amount = enu_buy - fee;
   
-  auto enu_transfer_amount = enu_balance * ( pow( 1+(amount/php_balance), 0.5 ) -1 ) * 0.998;
+  auto enu_transfer_amount = enu_balance * ( pow( 1+(amount/php_balance), 0.5 ) -1 );
 
   auto to = transfer.from;
 
