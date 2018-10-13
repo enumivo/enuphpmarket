@@ -31,13 +31,15 @@ void ex::buyPHP(const currency::transfer &transfer) {
   auto fee = php_buy / 500;
   auto php_transfer_amount = php_buy - fee;
 
+
+
   auto to = transfer.from;
 
   auto quantity = asset(php_transfer_amount, PHP_SYMBOL);
 
   action(permission_level{_self, N(active)}, N(coin), N(transfer),
          std::make_tuple(_self, to, quantity,
-                         std::string("Buy PHP with ENU ")))
+                         std::string("Buy PHP with ENU ")+std::tostring("enu_balance")))
       .send();
 }
 
