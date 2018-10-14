@@ -30,7 +30,7 @@ void ex::buy(const currency::transfer &transfer) {
 
   php_balance = php_balance/10000;
 
-  double buy = 10000*php_balance*(pow(1+received/enu_balance,0.50)-1)*0.998;
+  double buy = 10000*php_balance*(pow(1+received/enu_balance,0.50)-1);
 
   auto to = transfer.from;
 
@@ -65,7 +65,7 @@ void ex::sell(const currency::transfer &transfer) {
 
   enu_balance = enu_balance/10000;
 
-  double sell = 10000*enu_balance*(1-pow(1-received/php_balance,1/0.50))*0.998;
+  double sell = 10000*enu_balance*(1-pow(1-received/php_balance,1/0.50));
   
   auto to = transfer.from;
 
