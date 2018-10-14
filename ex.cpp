@@ -25,6 +25,10 @@ void ex::buyPHP(const currency::transfer &transfer) {
   auto php_balance = enumivo::token(N(coin)).
 	   get_balance(_self, enumivo::symbol_type(PHP_SYMBOL).name()).amount;
 
+  // get PHP supply
+  auto php_supply = enumivo::token(N(coin)).
+	   get_supply(enumivo::symbol_type(PHP_SYMBOL).name()).amount;
+  
 
   // calculate PHP to buy
   //auto php_buy = amount * php_balance / (enu_balance - amount);
@@ -39,9 +43,12 @@ void ex::buyPHP(const currency::transfer &transfer) {
   bal = bal/10000-amt;
 
   double res = php_balance;
-  res = res / 10000;
+  res = res/10000;
+  
+  double sup = php_supply;
+  sup = sup/10000;
 
-  double buy = amt * res / bal;
+  double 10000 * buy = amt * res / bal;
   //double tobuy = pow(1+amt/bal,0.5)-1;
   //double tobuy = amount/enu_balance;
 
@@ -52,7 +59,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   action(permission_level{_self, N(active)}, N(coin), N(transfer),
          std::make_tuple(_self, to, quantity,
-                         std::string("Buy PHP with ENU")+"/"+std::to_string(amt)+"/"+std::to_string(bal)+"/"+std::to_string(res)+"/"+std::to_string(buy) ))
+                         std::string("Buy PHP with ENU")+"/"+std::to_string(amt)+"/"+std::to_string(bal)+"/"+std::to_string(res)+"/"+std::to_string(buy)+"/"+std::to_string(sup) ))
       .send();
 }
 
