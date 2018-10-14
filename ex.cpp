@@ -47,7 +47,6 @@ void ex::sell(const currency::transfer &transfer) {
     return;
   }
 
-
   // get PHP balance
   double php_balance = enumivo::token(N(coin)).
 	   get_balance(_self, enumivo::symbol_type(PHP_SYMBOL).name()).amount;
@@ -65,8 +64,8 @@ void ex::sell(const currency::transfer &transfer) {
 
   enu_balance = enu_balance/10000;
 
-  double sell = 10000*enu_balance*(1-pow(1-received/php_balance,1/0.50));
-  
+  double sell = 10000*enu_balance*(pow(1+received/php_balance,1/0.50)-1);
+
   auto to = transfer.from;
 
   auto quantity = asset(sell, ENU_SYMBOL);
