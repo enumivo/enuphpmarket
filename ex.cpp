@@ -47,28 +47,29 @@ void ex::sell(const currency::transfer &transfer) {
     return;
   }
 
-  // get PHP balance
-  auto php_balance = enumivo::token(N(coin)).
-	   get_balance(_self, enumivo::symbol_type(PHP_SYMBOL).name()).amount;
 
-  // check purchase limit, not exceed 0.1% at each time
-  auto amount = transfer.quantity.amount;
-  enumivo_assert(amount * 1000 <= (php_balance - amount), "Limit exceeded, should be less than 0.1% of ENU held.");
+  // get PHP balance
+  double php_balance = enumivo::token(N(coin)).
+	   get_balance(_self, enumivo::symbol_type(PHP_SYMBOL).name()).amount;
+  
+  php_balance = php_balance/10000;
+
+  double received = transfer.quantity.amount;
+  received = received/10000;
+
+  php_balance = php_balance-received;  
 
   // get ENU balance
-  auto enu_balance = enumivo::token(N(enu.token)).
+  double enu_balance = enumivo::token(N(enu.token)).
 	   get_balance(_self, enumivo::symbol_type(ENU_SYMBOL).name()).amount;
 
-  // calculate ENU to transfer
-  auto enu_buy = amount * enu_balance / (php_balance - amount);
-  auto fee = enu_buy / 500;
-  auto enu_transfer_amount = enu_buy - fee;
-  
-  //auto enu_transfer_amount = enu_balance * ( pow( 1+(amount/php_balance), 0.5 ) -1 );
+  enu_balance = enu_balance/10000;
 
+  double sell = 10000*enu_balance*(1-pow(1-received/php_balance,1/0.50))*0.998
+  
   auto to = transfer.from;
 
-  auto quantity = asset(enu_transfer_amount, ENU_SYMBOL);
+  auto quantity = asset(sell, ENU_SYMBOL);
 
   action(permission_level{_self, N(active)}, N(enu.token), N(transfer),
          std::make_tuple(_self, to, quantity,
