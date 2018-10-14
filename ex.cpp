@@ -48,7 +48,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
   double sup = php_supply;
   sup = sup/10000;
 
-  double buy = amt*pow(1+amt/bal,res/sup)-1;
+  double buy = sup*(pow(1+amt/bal,res/sup)-1);
   //double tobuy = pow(1+amt/bal,0.5)-1;
   //double tobuy = amount/enu_balance;
 
