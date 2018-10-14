@@ -14,34 +14,23 @@ void ex::buy(const currency::transfer &transfer) {
   }
 
   // get ENU balance
-  auto enu_balance = enumivo::token(N(enu.token)).
+  double enu_balance = enumivo::token(N(enu.token)).
 	   get_balance(_self, enumivo::symbol_type(ENU_SYMBOL).name()).amount;
+  
+  enu_balance = enu_balance/10000;
 
-  // check purchase limit, not exceed 0.1% at each time
-  auto amount = transfer.quantity.amount;
+  double received = transfer.quantity.amount;
+  received = received/10000;
+
+  enu_balance = enu_balance-received;  
 
   // get PHP balance
-  auto php_balance = enumivo::token(N(coin)).
+  double php_balance = enumivo::token(N(coin)).
 	   get_balance(_self, enumivo::symbol_type(PHP_SYMBOL).name()).amount;
 
-  // get PHP supply
-  auto php_supply = enumivo::token(N(coin)).
-	   get_supply(enumivo::symbol_type(PHP_SYMBOL).name()).amount;
-  
+  php_balance = php_balance/10000;
 
-  double amt = amount;
-  amt = amt/10000;
-  
-  double bal = enu_balance;
-  bal = bal/10000-amt;
-
-  double res = php_balance;
-  res = res/10000;
-  
-  double sup = php_supply;
-  sup = sup/10000;
-
-  double buy = 10000*sup*(pow(1+amt/bal,res/sup)-1)*0.998;
+  double buy = 10000*php_balance*(pow(1+received/enu_balance,0.50)-1)*0.998;
 
   auto to = transfer.from;
 
@@ -53,7 +42,7 @@ void ex::buy(const currency::transfer &transfer) {
       .send();
 }
 
-void ex::sellPHP(const currency::transfer &transfer) {
+void ex::sell(const currency::transfer &transfer) {
   if (transfer.to != _self) {
     return;
   }
@@ -100,7 +89,7 @@ void ex::apply(account_name contract, action_name act) {
     auto transfer = unpack_action_data<currency::transfer>();
     enumivo_assert(transfer.quantity.symbol == PHP_SYMBOL,
                  "must pay with PHP");
-    sellPHP(transfer);
+    sell(transfer);
     return;
   }
 

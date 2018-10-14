@@ -13,7 +13,7 @@ class ex : public contract {
       : contract(self) {}
 
   void buy(const currency::transfer& transfer);
-  void sellPHP(const currency::transfer& transfer);
+  void sell(const currency::transfer& transfer);
 
   void apply(account_name contract, action_name act);
 
