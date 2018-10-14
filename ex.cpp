@@ -8,7 +8,7 @@
 using namespace enumivo;
 using namespace std;
 
-void ex::buyPHP(const currency::transfer &transfer) {
+void ex::buy(const currency::transfer &transfer) {
   if (transfer.to != _self) {
     return;
   }
@@ -19,7 +19,6 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   // check purchase limit, not exceed 0.1% at each time
   auto amount = transfer.quantity.amount;
-  //enumivo_assert(amount * 1000 <= (enu_balance - amount), "Limit exceeded, should be less than 0.1% of PHP held.");
 
   // get PHP balance
   auto php_balance = enumivo::token(N(coin)).
@@ -29,12 +28,6 @@ void ex::buyPHP(const currency::transfer &transfer) {
   auto php_supply = enumivo::token(N(coin)).
 	   get_supply(enumivo::symbol_type(PHP_SYMBOL).name()).amount;
   
-
-  // calculate PHP to buy
-  //auto php_buy = amount * php_balance / (enu_balance - amount);
-  //auto php_buy = amount * php_balance / (enu_balance);
-  //auto fee = php_buy / 500;
-  //auto php_transfer_amount = php_buy - fee;
 
   double amt = amount;
   amt = amt/10000;
@@ -48,10 +41,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
   double sup = php_supply;
   sup = sup/10000;
 
-  double buy = sup*(pow(1+amt/bal,res/sup)-1);
-  //double tobuy = pow(1+amt/bal,0.5)-1;
-  //double tobuy = amount/enu_balance;
-
+  double buy = 10000*sup*(pow(1+amt/bal,res/sup)-1)*0.998;
 
   auto to = transfer.from;
 
@@ -59,7 +49,7 @@ void ex::buyPHP(const currency::transfer &transfer) {
 
   action(permission_level{_self, N(active)}, N(coin), N(transfer),
          std::make_tuple(_self, to, quantity,
-                         std::string("Buy PHP with ENU")+"/"+std::to_string(amt)+"/"+std::to_string(bal)+"/"+std::to_string(res)+"/"+std::to_string(buy)+"/"+std::to_string(sup) ))
+                         std::string("Buy PHP with ENU")))
       .send();
 }
 
@@ -102,7 +92,7 @@ void ex::apply(account_name contract, action_name act) {
     auto transfer = unpack_action_data<currency::transfer>();
     enumivo_assert(transfer.quantity.symbol == ENU_SYMBOL,
                  "must pay with ENU");
-    buyPHP(transfer);
+    buy(transfer);
     return;
   }
 
