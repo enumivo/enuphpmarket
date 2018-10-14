@@ -32,9 +32,9 @@ void ex::buyPHP(const currency::transfer &transfer) {
   //auto fee = php_buy / 500;
   //auto php_transfer_amount = php_buy - fee;
 
-  double amt = amount;
-  double bal = enu_balance;
-  double res = php_balance;
+  double amt = amount/1000;
+  double bal = (enu_balance-amount)/1000;
+  double res = php_balance/1000;
   double buy = amt * res / bal;
   //double tobuy = pow(1+amt/bal,0.5)-1;
   //double tobuy = amount/enu_balance;
